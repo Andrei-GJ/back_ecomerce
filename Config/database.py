@@ -6,8 +6,11 @@ import os
 from Models.base import Base
 
 ## Block for record (Models folder)
-# from Models.usuario import Usuario
+from Models.admin import Admin
+from Models.category import Category
+from Models.document_type import DocumentType
 from Models.product import Product
+from Models.users import User
 
 ## Get environment variables
 load_dotenv()
@@ -21,7 +24,6 @@ DATABASE_URL = (
     f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
 engine = create_engine(DATABASE_URL)
-
 
 Session = sessionmaker(bind=engine)
 
