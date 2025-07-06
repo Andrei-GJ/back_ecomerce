@@ -21,8 +21,8 @@ class Product(Base):
     )
     
     # Relaciones (opcionales, dependiendo de tus otros modelos)
-    provider = relationship("Provider", back_populates="products")
-    category = relationship("Category", back_populates="products")
+    # provider = relationship("Provider", back_populates="products")
+    # category = relationship("Category", back_populates="products")
     
     def __repr__(self):
         return f"<Product(id={self.id}, name='{self.name}', price={self.price})>"

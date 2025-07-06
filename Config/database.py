@@ -5,9 +5,9 @@ import os
 
 from Models.base import Base
 
-## Block for record
-
-
+## Block for record (Models folder)
+# from Models.usuario import Usuario
+from Models.product import Product
 
 ## Get environment variables
 load_dotenv()
