@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from Config.database import Session, inicializar_base_de_datos
 from Services.userServices import UserService
 from Services.productServices import ProductService
+from Services.providerServices import ProviderService
 import logging
 
 app = FastAPI()
@@ -9,6 +10,7 @@ app = FastAPI()
 @app.get("/")
 def root(): 
     return {"message": "Hello, World!"}
+
 
 ## Bloque de peticiones usuarios 
 @app.get("/all_users")
@@ -44,6 +46,38 @@ def create_user(user_data: dict):
     except Exception as e:
         return {"error" : str(e)}
 
+
+# bloque de peticiones de proveedor
+@app.get("/all_provider")
+def all_provider():
+    provider_service = ProviderService(Session)
+    try:
+        provider = provider_service.get_all_providers()
+        return provider
+    except Exception as e:
+        return {"error" : str(e)}
+
+@app.get("/provider/{provider_id}")
+def get_provider_by_id(provider_id):
+    provider_service = ProviderService(Session)
+    try:
+        provider = provider_service.get_provider_by_id(provider_id)
+        return provider
+    except Exception as e:
+        return {"error" : str(e)}
+
+@app.post("/create_provider")
+def crete_provider(provider_data :dict):
+    provider_service = ProviderService(Session)
+    try:
+        provider = provider_service.create_provider(
+            provider_data["name_provider"]
+        )
+        return provider
+    except Exception as e:
+        return {"error" : str(e)}
+
+
 # ## Bloque de peticiones productos
 @app.get("/all_products")
 def get_all_products():
@@ -68,13 +102,13 @@ def create_product(product_data: dict):
     product_service = ProductService(Session)
     try:
         product = product_service.create_product(
-            provider_id = ["provider_id"],
-            category_id= ["category_id"],
-            name_product= ["name_product"],
-            quantity=["quantity"],
-            isactive=["isactive"],
-            price= ["price"],
-            image= ["image"]
+            product_data["provider_id"],
+            product_data["category_id"],
+            product_data["name_product"],
+            product_data["quantity"],
+            product_data["isactive"],
+            product_data["price"],
+            product_data["image"]
         )
         return product
     except Exception as e:

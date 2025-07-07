@@ -1,7 +1,7 @@
 # services/user_service.py
 from sqlalchemy.orm import sessionmaker
 # Importa tu modelo User desde su ubicación
-from Models.users import User  # Asegúrate que el archivo se llama 'user.py'
+from Models.users import User
 
 class UserService:
     def __init__(self, Session_class: sessionmaker):
@@ -20,12 +20,17 @@ class UserService:
             )
             session.add(new_user)
             session.commit()
-            print(f"Usuario '{first_name} {surname}' creado con ID: {new_user.id}")
-            return new_user
+            return {
+                'id': new_user.id,
+                'documenttype': new_user.documenttype,
+                'documentnumber': new_user.documentnumber,
+                'first_name': new_user.first_name,
+                'surname': new_user.surname,
+                'email': new_user.email
+            }
         except Exception as e:
             session.rollback()
-            print(f"Error al crear usuario '{first_name} {surname}': {e}")
-            return None
+            return {"error" : str(e)}
         finally:
             session.close()
 
@@ -52,5 +57,7 @@ class UserService:
                     'email': user.email
                 })
             return users_dict
+        except Exception as e:
+            return {"error" : str(e)}
         finally:
             session.close()

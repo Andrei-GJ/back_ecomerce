@@ -1,8 +1,7 @@
 # services/user_service.py
 from sqlalchemy.orm import sessionmaker
 # Importa tu modelo User desde su ubicación
-from Models.product import Product  # Asegúrate que el archivo se llama 'user.py'
-
+from Models.product import Product
 
 class ProductService:
     def __init__(self, Session_class: sessionmaker):
@@ -23,6 +22,8 @@ class ProductService:
                     'isactive': product.isactive
                 })
             return products_dict
+        except Exception as e:
+            return {"error" : str(e)}
         finally:
             session.close()
             
@@ -32,7 +33,7 @@ class ProductService:
             product = session.query(Product).get(product_id)
             return product
         except Exception as e:
-            return {"error" : e}
+            return {"error": str(e)}
         finally:
             session.close()
 

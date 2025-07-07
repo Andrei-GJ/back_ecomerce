@@ -11,7 +11,7 @@ from Models.category import Category
 from Models.document_type import DocumentType
 from Models.product import Product
 from Models.users import User
-
+from Models.provider import Provider
 ## Get environment variables
 load_dotenv()
 DB_USER = os.getenv("DATABASE_USER")

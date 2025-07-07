@@ -3,9 +3,9 @@ from Models.base import Base
 
 class Provider(Base):
     __tablename__ = 'provider'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-    # Puedes agregar más campos según tu necesidad
 
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name_provider = Column(String(50), nullable=True)
+    
     def __repr__(self):
-        return f"<Provider(id={self.id}, name='{self.name}')>"
+        return f"<Provider(id={self.id}, name_provider='{self.name_provider}')>"
