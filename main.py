@@ -114,4 +114,14 @@ def create_product(product_data: dict):
     except Exception as e:
         return {"error" : str(e) }
     
-# @app.get(off_product)
+@app.post("/change_status_product")
+def change_status_product(product_off: dict):
+    product_service = ProductService(Session)
+    try:
+        status_product_result = product_service.change_status_product(
+            product_off["isactive"],
+            product_off["product_id"]
+        )
+        return status_product_result
+    except Exception as e:
+        return {"error": str(e)}

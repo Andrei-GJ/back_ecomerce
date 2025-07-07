@@ -42,6 +42,7 @@ class ProductService:
         try:
             new_product = Product(
                 category_id=category_id,
+                provider_id=provider_id,
                 name_product=name_product,
                 quantity=quantity,
                 isactive=isactive,
@@ -55,6 +56,7 @@ class ProductService:
                 'name_product': new_product.name_product,
                 'price': new_product.price,
                 'category_id': new_product.category_id,
+                'provider_id': new_product.provider_id,
                 'isactive': new_product.isactive
             }
         except Exception as e:
@@ -63,7 +65,21 @@ class ProductService:
         finally:
             session.close()
 
-    def off_product (self , isactive : bool , product_id: int):
+    def change_status_product(self, isactive: bool, product_id: int):
         session = self.Session()
-        product = self.get_product_by_id(product_id)
-        return(product)
+        try:
+            product = session.query(Product).get(product_id)
+            if not product:
+                return {"error": "Producto no encontrado"}
+            product.isactive = isactive
+            session.commit()
+            return {
+                "id": product.id,
+                "name_product": product.name_product,
+                "isactive": product.isactive
+            }
+        except Exception as e:
+            session.rollback()
+            return {"error": str(e)}
+        finally:
+            session.close()
