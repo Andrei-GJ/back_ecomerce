@@ -9,7 +9,7 @@ class Product(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     provider_id = Column(Integer, ForeignKey('provider.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
     category_id = Column(Integer, ForeignKey('category.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
-    name = Column(String(50), nullable=False)
+    name_product = Column(String(50), nullable=False)
     quantity = Column(Integer, default=0, nullable=True)
     isactive = Column(Boolean, default=False, nullable=True)
     price = Column(Numeric(10, 2), nullable=True)

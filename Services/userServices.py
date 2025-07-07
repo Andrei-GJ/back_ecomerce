@@ -12,11 +12,11 @@ class UserService:
         session = self.Session()
         try:
             new_user = User(
-                documenttype=document_type_id,
-                documentnumber=document_number,
-                first_name=first_name,
-                surname=surname,
-                email=email
+                documenttype = document_type_id,
+                documentnumber = document_number,
+                first_name = first_name,
+                surname = surname,
+                email = email
             )
             session.add(new_user)
             session.commit()
