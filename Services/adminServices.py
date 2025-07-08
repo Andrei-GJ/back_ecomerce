@@ -25,7 +25,7 @@ class AdmintService:
         finally:
             session.close()
 
-    def get_add_by_id(self, admin_id):
+    def get_add_by_id(self, admin_id: int):
         session = self.Session()
         try:
             admin = session.query(Admin).get(admin_id)
@@ -35,7 +35,7 @@ class AdmintService:
         finally:
             session.close()
 
-    def get_add_by_user_id(self, user_id):
+    def get_add_by_user_id(self, user_id:int):
         session = self.Session()
         try:
             admin = session.query(Admin).get(user_id)
@@ -45,7 +45,7 @@ class AdmintService:
         finally:
             session.close()
 
-    def change_status_admin(self, isactive: bool, admin_id: int)
+    def change_status_admin(self, isactive: bool, admin_id: int):
         session = self.Session()
         try:
             admin = session.query(Admin).get(admin_id)
@@ -59,6 +59,7 @@ class AdmintService:
                 'isactive':admin.isactive
             }
         except Exception as e:
+            session.rollback()
             return {"error" : str(e)}
         finally:
             session.close()
@@ -78,6 +79,7 @@ class AdmintService:
                 'isactive' : new_admin.isactive
             }
         except Exception as e:
+            session.rollback()
             return {"error" : str(e)}
         finally:
             session.close()
