@@ -11,7 +11,7 @@ class Category(Base):
     isactive = Column(Boolean, default=False, nullable=True)
     
     # Relaciones (opcionales, dependiendo de tus otros modelos)
-    # products = relationship("Product", back_populates="category")
+    products = relationship("Product", back_populates="category")
     
     def __repr__(self):
         return f"<Category(id={self.id}, name='{self.name}', isactive={self.isactive})>"
