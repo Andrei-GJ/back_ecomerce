@@ -7,6 +7,14 @@ import logging
 
 app = FastAPI()
 
+# Inicializar la base de datos al arrancar la aplicación
+try:
+    inicializar_base_de_datos()
+    print("Base de datos inicializada correctamente")
+except Exception as e:
+    print(f"Error al inicializar la base de datos: {e}")
+    logging.error(f"Database initialization error: {e}")
+
 @app.get("/")
 def root(): 
     return {"message": "Hello, World!"}
