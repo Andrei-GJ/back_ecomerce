@@ -125,3 +125,8 @@ def change_status_product(product_off: dict):
         return status_product_result
     except Exception as e:
         return {"error": str(e)}
+
+# Configuración para Vercel
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
