@@ -1,4 +1,6 @@
 # services/user_service.py
+from itertools import product
+
 from sqlalchemy.orm import sessionmaker
 # Importa tu modelo User desde su ubicación
 from Models.product import Product
@@ -81,5 +83,52 @@ class ProductService:
         except Exception as e:
             session.rollback()
             return {"error": str(e)}
+        finally:
+            session.close()
+
+    def get_product_by_category(self , category_id:int ):
+        session = self.Session()
+        try:
+            products = session.query(Product).filter(Product.category_id == category_id).all()
+            products_dict = []
+            for product in products:
+                products_dict.append({
+                    'id': product.id,
+                    'name_product': product.name_product,
+                    'price': product.price,
+                    'category_id': product.category_id,
+                    'isactive': product.isactive
+                })
+            return products_dict
+        except Exception as e:
+            return {"error": str(e)}
+        finally:
+            session.close()
+
+    def get_products_by_category(self):
+        session = self.Session()
+        try:
+            from Models.category import Category
+            categories = session.query(Category).all()
+            result = []
+            for category in categories:
+                products = [
+                    {
+                        'id': p.id,
+                        'name_product': p.name_product,
+                        'price': p.price,
+                        'isactive': p.isactive,
+                        'provider_id': p.provider_id
+                    }
+                    for p in category.products
+                ]
+                result.append({
+                    'category_id': category.id,
+                    'category_name': getattr(category, 'name_category', None),
+                    'products': products
+                })
+            return result
+        except Exception as e:
+            return {'error': str(e)}
         finally:
             session.close()

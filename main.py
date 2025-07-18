@@ -1,3 +1,5 @@
+from operator import truediv
+
 from fastapi import FastAPI
 from Config.database import Session, inicializar_base_de_datos
 from Services.userServices import UserService
@@ -20,9 +22,12 @@ def root():
     return {"message": "Hello, World!"}
 
 
-## Bloque de peticiones usuarios 
+# =====================
+# Bloque de peticiones usuarios
+# =====================
 @app.get("/all_users")
 def get_all_users():
+    """Lista todos los usuarios del sistema"""
     user_service = UserService(Session)
     try:
         users = user_service.get_all_users()
@@ -32,6 +37,7 @@ def get_all_users():
 
 @app.get("/user/{user_id}")
 def get_user(user_id: int):
+    """Obtiene un usuario por su ID"""
     user_service = UserService(Session)
     try:
         user = user_service.get_user_by_id(user_id)
@@ -41,6 +47,10 @@ def get_user(user_id: int):
 
 @app.post("/create_user")
 def create_user(user_data: dict):
+    """
+    Crea un nuevo usuario
+    Requiere: document_type_id, document_number, first_name, surname, email
+    """
     user_service = UserService(Session)
     try:
         user = user_service.create_user(
@@ -55,9 +65,12 @@ def create_user(user_data: dict):
         return {"error" : str(e)}
 
 
-# bloque de peticiones de proveedor
+# =====================
+# Bloque de peticiones de proveedor
+# =====================
 @app.get("/all_provider")
 def all_provider():
+    """Lista todos los proveedores"""
     provider_service = ProviderService(Session)
     try:
         provider = provider_service.get_all_providers()
@@ -66,7 +79,8 @@ def all_provider():
         return {"error" : str(e)}
 
 @app.get("/provider/{provider_id}")
-def get_provider_by_id(provider_id):
+def get_provider_by_id(provider_id: int):
+    """Obtiene un proveedor por su ID"""
     provider_service = ProviderService(Session)
     try:
         provider = provider_service.get_provider_by_id(provider_id)
@@ -75,7 +89,11 @@ def get_provider_by_id(provider_id):
         return {"error" : str(e)}
 
 @app.post("/create_provider")
-def crete_provider(provider_data :dict):
+def create_provider(provider_data: dict):
+    """
+    Crea un nuevo proveedor
+    Requiere: name_provider
+    """
     provider_service = ProviderService(Session)
     try:
         provider = provider_service.create_provider(
@@ -86,9 +104,12 @@ def crete_provider(provider_data :dict):
         return {"error" : str(e)}
 
 
-# ## Bloque de peticiones productos
+# =====================
+# Bloque de peticiones productos
+# =====================
 @app.get("/all_products")
 def get_all_products():
+    """Lista todos los productos"""
     product_service = ProductService(Session)
     try:
         products = product_service.get_all_products()
@@ -97,7 +118,8 @@ def get_all_products():
         return {"error" : str(e)}
 
 @app.get("/product/{product_id}")
-def get_product_by_id(product_id : int):
+def get_product_by_id(product_id: int):
+    """Obtiene un producto por su ID"""
     product_service = ProductService(Session)
     try:
         product = product_service.get_product_by_id(product_id)
@@ -107,6 +129,10 @@ def get_product_by_id(product_id : int):
 
 @app.post("/create_product")
 def create_product(product_data: dict):
+    """
+    Crea un nuevo producto
+    Requiere: provider_id, category_id, name_product, quantity, isactive, price, image
+    """
     product_service = ProductService(Session)
     try:
         product = product_service.create_product(
@@ -124,6 +150,10 @@ def create_product(product_data: dict):
     
 @app.post("/change_status_product")
 def change_status_product(product_off: dict):
+    """
+    Cambia el estado de un producto
+    Requiere: isactive, product_id
+    """
     product_service = ProductService(Session)
     try:
         status_product_result = product_service.change_status_product(
@@ -133,7 +163,24 @@ def change_status_product(product_off: dict):
         return status_product_result
     except Exception as e:
         return {"error": str(e)}
-
+@app.get("/get_products_category")
+def get_products_by_category():
+    """Lista todos los productos agrupados por categoría"""
+    product_service = ProductService(Session)
+    try:
+        products = product_service.get_products_by_category()
+        return products
+    except Exception as e:
+        return {"error": str(e)}
+@app.get("/product_by_category/{category_id}")
+def get_product_by_category(category_id: int):
+    """Lista los productos de una categoría específica"""
+    product_service = ProductService(Session)
+    try:
+        products = product_service.get_product_by_category(category_id)
+        return products
+    except Exception as e:
+        return {"error": str(e)}
 # Configuración para Vercel
 if __name__ == "__main__":
     import uvicorn
