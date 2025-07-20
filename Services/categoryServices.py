@@ -70,4 +70,4 @@ class CategoryService:
             session.rollback()
             return {"error": str(e)}
         finally:
-            session.close()\
+            session.close()
