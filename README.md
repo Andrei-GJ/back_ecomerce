@@ -18,9 +18,14 @@ El propósito de este repositorio es gestionar la lógica de negocio y el acceso
 ## Tecnologías utilizadas
 
 - Python 3.x
-- (Framework web utilizado, por ejemplo: Django, Flask, FastAPI)
-- (Base de datos: PostgreSQL, MySQL, SQLite, MongoDB, etc.)
-- (Bibliotecas extra: JWT, Stripe, etc.)
+- FastAPI (Framework web)
+- PostgreSQL (Base de datos)
+- Bibliotecas principales:
+  - SQLAlchemy (ORM)
+  - python-dotenv (Manejo de variables de entorno)
+  - uvicorn (Servidor ASGI)
+  - python-multipart (Manejo de formularios)
+  - psycopg2-binary (Conector PostgreSQL)
 
 ## Instalación
 
