@@ -1,6 +1,7 @@
 from operator import truediv
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from Config.database import Session, inicializar_base_de_datos
 from Services.userServices import UserService
 from Services.productServices import ProductService
@@ -8,6 +9,15 @@ from Services.providerServices import ProviderService
 import logging
 
 app = FastAPI()
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://127.0.0.1:3000", "http://127.0.0.1:3001"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+)
 
 # Inicializar la base de datos al arrancar la aplicación
 try:
