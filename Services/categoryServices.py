@@ -52,19 +52,19 @@ class CategoryService:
         finally:
             session.close()\
 
-    def create_category(self , name : str , isactive : bool):
+    def create_category(self, name: str, isactive: bool = False):
         session = self.Session()
         try:
             new_category = Category(
-                name = name,
-                isactive = isactive
+                name=name,
+                isactive=isactive
             )
             session.add(new_category)
             session.commit()
             return {
-                'id':new_category.id,
-                'name':new_category.name,
-                'isactive':new_category.isactive
+                'id': new_category.id,
+                'name': new_category.name,
+                'isactive': new_category.isactive
             }
         except Exception as e:
             session.rollback()
