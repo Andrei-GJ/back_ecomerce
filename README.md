@@ -56,6 +56,36 @@ El propósito de este repositorio es gestionar la lógica de negocio y el acceso
    python main.py  # O el archivo principal de tu framework
    ```
 
+## Solución de problemas comunes
+
+### Error de clave duplicada en proveedores
+
+Si experimentas el error `duplicate key value violates unique constraint "provider_pkey"` al crear nuevos proveedores, esto indica que la secuencia de auto-incremento de la tabla `provider` está desalineada.
+
+**Síntomas:**
+- Error al hacer POST a `/create_provider`
+- Mensaje: `duplicate key value violates unique constraint "provider_pkey"`
+
+**Solución:**
+Ejecuta el siguiente script SQL en tu base de datos PostgreSQL para realinear la secuencia:
+
+```sql
+SELECT setval(pg_get_serial_sequence('provider', 'id'), MAX(id)) FROM provider;
+```
+
+**Usando el script de migración:**
+```bash
+psql -d your_database_name -f migrations/fix_provider_sequence.sql
+```
+
+**Explicación:**
+Este comando ajusta la secuencia `provider_id_seq` para continuar desde el valor máximo actual en la tabla, evitando conflictos con IDs existentes.
+
+**Prevención:**
+- Evita insertar registros con IDs específicos en producción
+- Usa siempre las operaciones de la API para crear nuevos registros
+- Aplica este script después de importar datos manualmente
+
 ## Endpoints principales
 
 - `/api/products` — Gestión de productos
