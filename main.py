@@ -251,6 +251,43 @@ def change_category_status(category_id: int, status_data: dict):
     except Exception as e:
         return {"error": str(e)}
 
+# =====================
+# Bloque de autenticación
+# =====================
+@app.post("/auth/register")
+def register_user(user_data: dict):
+    """
+    Registra un nuevo usuario
+    Requiere: email, password, first_name, surname, document_type_id, document_number
+    """
+    user_service = UserService(Session)
+    try:
+        return user_service.register(
+            email=user_data["email"],
+            password=user_data["password"],
+            first_name=user_data["first_name"],
+            surname=user_data["surname"],
+            document_type_id=user_data["document_type_id"],
+            document_number=user_data["document_number"]
+        )
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.post("/auth/login")
+def login_user(login_data: dict):
+    """
+    Inicia sesión de usuario
+    Requiere: email, password
+    """
+    user_service = UserService(Session)
+    try:
+        return user_service.login(
+            email=login_data["email"],
+            password=login_data["password"]
+        )
+    except Exception as e:
+        return {"error": str(e)}
+
 # Configuración para Vercel
 if __name__ == "__main__":
     import uvicorn

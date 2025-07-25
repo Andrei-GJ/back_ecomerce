@@ -11,8 +11,9 @@ class User(Base):
     documentnumber = Column(String(20), nullable=True)
     first_name = Column(String(50), nullable=True)
     surname = Column(String(50), nullable=True)
-    email = Column(String(40), nullable=True)
-    
+    email = Column(String(40), nullable=False, unique=True)
+    password = Column(String(100), nullable=False)
+
     # Relaciones
     document_type = relationship("DocumentType", back_populates="users")
     admin = relationship("Admin", back_populates="user")
