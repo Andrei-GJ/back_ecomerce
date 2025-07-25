@@ -6,6 +6,7 @@ from Config.database import Session, inicializar_base_de_datos
 from Services.userServices import UserService
 from Services.productServices import ProductService
 from Services.providerServices import ProviderService
+from Services.categoryServices import CategoryService
 import logging
 
 app = FastAPI()
@@ -191,6 +192,65 @@ def get_product_by_category(category_id: int):
         return products
     except Exception as e:
         return {"error": str(e)}
+
+
+# =====================
+# Bloque de peticiones de categorías
+# =====================
+@app.get("/categories")
+def get_all_categories():
+    """Lista todas las categorías disponibles"""
+    category_service = CategoryService(Session)
+    try:
+        categories = category_service.get_all_category()
+        return categories
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.get("/category/{category_id}")
+def get_category(category_id: int):
+    """Obtiene una categoría específica por su ID"""
+    category_service = CategoryService(Session)
+    try:
+        category = category_service.get_category_by_id(category_id)
+        return category
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.post("/create_category")
+def create_category(category_data: dict):
+    """
+    Crea una nueva categoría
+    Requiere: name
+    Opcional: isactive (por defecto False)
+    """
+    category_service = CategoryService(Session)
+    try:
+        isactive = category_data.get("isactive", False)
+        category = category_service.create_category(
+            name=category_data["name"],
+            isactive=isactive
+        )
+        return category
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.put("/category/{category_id}/status")
+def change_category_status(category_id: int, status_data: dict):
+    """
+    Cambia el estado de una categoría
+    Requiere: isactive (bool)
+    """
+    category_service = CategoryService(Session)
+    try:
+        category = category_service.change_status_category(
+            category_id=category_id,
+            isactive=status_data["isactive"]
+        )
+        return category
+    except Exception as e:
+        return {"error": str(e)}
+
 # Configuración para Vercel
 if __name__ == "__main__":
     import uvicorn
