@@ -1,6 +1,5 @@
 # services/user_service.py
 from sqlalchemy.orm import sessionmaker
-# Importa tu modelo User desde su ubicación
 from Models.users import User
 import hashlib
 
@@ -23,23 +22,23 @@ class UserService:
             # Crear nuevo usuario
             hashed_password = self.hash_password(password)
             new_user = User(
-                email=email,
-                password=hashed_password,
+                documenttype=document_type_id,
+                documentnumber=document_number,
                 first_name=first_name,
                 surname=surname,
-                documenttype=document_type_id,
-                documentnumber=document_number
+                email=email,
+                password=hashed_password
             )
             session.add(new_user)
             session.commit()
             
             return {
                 'id': new_user.id,
-                'email': new_user.email,
+                'documenttype': new_user.documenttype,
+                'documentnumber': new_user.documentnumber,
                 'first_name': new_user.first_name,
                 'surname': new_user.surname,
-                'documenttype': new_user.documenttype,
-                'documentnumber': new_user.documentnumber
+                'email': new_user.email
             }
         except Exception as e:
             session.rollback()
@@ -61,9 +60,11 @@ class UserService:
             
             return {
                 'id': user.id,
-                'email': user.email,
+                'documenttype': user.documenttype,
+                'documentnumber': user.documentnumber,
                 'first_name': user.first_name,
-                'surname': user.surname
+                'surname': user.surname,
+                'email': user.email
             }
         except Exception as e:
             return {"error": str(e)}
